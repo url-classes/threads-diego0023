@@ -5,6 +5,9 @@
  */
 package main;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author migu_
@@ -14,8 +17,95 @@ public class frmMain extends javax.swing.JFrame {
     /**
      * Creates new form frmMain
      */
+    contador hilo1 = new contador();
+    alfabeto hilo2 = new alfabeto();
     public frmMain() {
         initComponents();
+
+        hilo1.start();
+        hilo2.start();
+    }
+
+    // clase para el contador
+    public class contador extends Thread {
+
+        boolean flag = false;
+
+        public void starRunnig() {
+            this.flag = true;
+           
+        }
+
+        @Override
+        public void run() {
+            while (true) {
+
+                while (this.flag) {
+
+                    for (int i = 1; i <= 10; i++) {
+                        lblNumero1.setText(String.valueOf(i));
+                        try {
+                            Thread.sleep(250);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    
+                    this.flag= false;
+
+                }
+
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        }
+    }
+    
+    public class alfabeto extends Thread{
+         boolean flag = false;
+         // algo para la convercion
+          int radix = 10; 
+
+        public void starRunnig() {
+            this.flag = true;
+           
+        }
+        
+         @Override
+        public void run(){
+            
+              while (true) {
+
+                while (this.flag) {
+
+                    for (int i = 97; i <= 122; i++) {
+                        
+                        char letra = (char)i;
+                       
+                        lblLetra.setText(String.valueOf(letra));
+                        try {
+                            Thread.sleep(250);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    
+                    this.flag= false;
+
+                }
+
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
     }
 
     /**
@@ -96,10 +186,14 @@ public class frmMain extends javax.swing.JFrame {
 
     private void btnIniciarNumeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarNumeroActionPerformed
         // TODO add your handling code here:
+        // se inicia a contar
+        hilo1.starRunnig();
+
     }//GEN-LAST:event_btnIniciarNumeroActionPerformed
 
     private void btnIniciarLetraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarLetraActionPerformed
         // TODO add your handling code here:
+        hilo2.starRunnig();
     }//GEN-LAST:event_btnIniciarLetraActionPerformed
 
     /**
